@@ -22,7 +22,7 @@ export default function Login() {
 
                 <TextInput style={styles.input} placeholder="Senha" />
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Trainings')}>
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
 

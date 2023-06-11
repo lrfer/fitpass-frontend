@@ -1,30 +1,18 @@
 import React from "react";
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import DatePicker from 'react-native-datepicker';
-export default function Register() {
+
+export default function Trainings() {
     const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
             <View style={styles.containerHeader}>
-                <Text style={styles.title}>Cadastro</Text>
+                <Text style={styles.title}>Meus Treinos</Text>
             </View>
 
             <View style={styles.containerForm}>
-                <TextInput style={styles.input} placeholder="Nome" />
-                <TextInput style={styles.input} placeholder="Telefone" />
-                <DatePicker format = "DD-MM-YYYY"  minDate="12-06-2023" style={styles.input} placeholder="Data de Nascimento" />
-                <TextInput style={styles.input} placeholder="E-mail" />
-                <TextInput style={styles.input} placeholder="Senha" />
-
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Registrar</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')} >
-                    <Text style={styles.loginText}>Já tenho uma conta</Text>
-                </TouchableOpacity>
+                
             </View>
         </View>
     );
