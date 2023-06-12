@@ -1,36 +1,81 @@
 import React from "react";
-import { Text, View, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Text, View, StyleSheet, Touchable, TouchableOpacity } from 'react-native';
+import { FlashList } from "@shopify/flash-list";
+import { useState, useEffect } from 'react';
 
 export default function Trainings() {
-    const navigation = useNavigation();
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.containerHeader}>
-                <Text style={styles.title}>Meus Treinos</Text>
-            </View>
+    const [exercices, setexercices] = useState([])
+    
 
-            <View style={styles.containerForm}>
+
+      
+      
+
+    useEffect(() => {
+        fetch('https://www.balldontlie.io/api/v1/players?per_page=100')
+            .then((response) => response.json())
+            .then((data) => setexercices(data.data))
+            .catch((error) => console.log(error))
+        }, []);
+
+        return (
+            
+      
+            <View style={styles.container}>
+
+
+                <Text style={{
+                    fontSize: 28,
+                    fontWeight: 'bold',
+                    padding: 20,
+                    textAlign: 'center',
+                    color: '#ffffff',
+                    backgroundColor: '#7159c1',
+                }}
+                >
+                    Exercices
+                </Text>
                 
+
+
+                <FlashList 
+                data={exercices}
+                renderItem={({item}) => (
+                    <TouchableOpacity style={{marginTop:20,marginLeft:12}}>
+                        <View>
+                            <Text style={{
+                                fontSize: 18,
+                                height: 60,
+                                
+                            }}>
+                                {item.first_name} {item.last_name}{"\\\\"} {item.team.full_name}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                )}
+                estimatedItemSize={200}
+                />
             </View>
-        </View>
-    );
+
+        );
+
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
+        
     },
     containerHeader: {
         paddingHorizontal: '5%',
         paddingTop: '10%',
+        
     },
     containerForm: {
         paddingHorizontal: '5%',
-        justifyContent: 'center',
-        alignItems: 'center',
+
     },
     title: {
         fontSize: 18,
