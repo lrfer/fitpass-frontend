@@ -6,48 +6,52 @@ import { useState, useEffect } from 'react';
 export default function Trainings() {
 
     const [exercices, setexercices] = useState([])
-    
 
 
-      
-      
+
+
+
 
     useEffect(() => {
         fetch('https://www.balldontlie.io/api/v1/players?per_page=100')
             .then((response) => response.json())
             .then((data) => setexercices(data.data))
             .catch((error) => console.log(error))
-        }, []);
+    }, []);
 
-        return (
-            
-      
-            <View style={styles.container}>
+    return (
 
 
-                <Text style={{
-                    fontSize: 28,
-                    fontWeight: 'bold',
-                    padding: 20,
-                    textAlign: 'center',
-                    color: '#ffffff',
-                    backgroundColor: '#7159c1',
-                }}
-                >
-                    Exercices
-                </Text>
-                
+        <View style={styles.container}>
 
 
-                <FlashList 
+            <Text style={{
+                fontSize: 28,
+                fontWeight: 'bold',
+                padding: 20,
+                textAlign: 'center',
+                color: '#ffffff',
+                backgroundColor: '#7159c1',
+            }}
+            >
+                Exercices
+            </Text>
+
+
+
+            <FlashList
                 data={exercices}
-                renderItem={({item}) => (
-                    <TouchableOpacity style={{marginTop:20,marginLeft:12}}>
+                renderItem={({ item }) => (
+                    <TouchableOpacity style={{ marginTop: 20, marginLeft: 12, }}>
                         <View>
                             <Text style={{
                                 fontSize: 18,
                                 height: 60,
-                                
+                                backgroundColor: '#7159c1',
+                                borderRadius: 10,
+                                paddingHorizontal: 10,
+                                color: '#ffffff',
+
                             }}>
                                 {item.first_name} {item.last_name}{"\\\\"} {item.team.full_name}
                             </Text>
@@ -55,10 +59,10 @@ export default function Trainings() {
                     </TouchableOpacity>
                 )}
                 estimatedItemSize={200}
-                />
-            </View>
+            />
+        </View>
 
-        );
+    );
 
 }
 
@@ -66,12 +70,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
-        
+
     },
     containerHeader: {
         paddingHorizontal: '5%',
         paddingTop: '10%',
-        
+
     },
     containerForm: {
         paddingHorizontal: '5%',
@@ -110,4 +114,7 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         textAlign: 'center',
     },
-});
+    exercices: {
+        backgroundColor: "#ff000"
+    }
+})
