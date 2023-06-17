@@ -1,39 +1,52 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import userService from '../../services/userServices';
+
 
 export default function Login() {
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleLogin = async () => {
-        try {
-            const response = await fetch("http://10.14.96.48:3333/user/login", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password
-                }),
-            });
-
-            if (response.ok) {
-                // Login bem-sucedido
-                console.log('Login bem-sucedido');
-            } else {
-                // Login falhou
-                console.log('Falha no login');
-            }
-        } catch (error) {
-            console.log('Erro na chamada de API:', error);
+    const callLogin = () => {
+        // cria um objeto com os dados do usuário
+        let data = {
+            email: email,
+            password: password
         }
-    };
+        
+        //chama a função login do userService
+        userService.login(data)
+            //se o login for bem sucedido, envia para a página Home
+            .then((response) => {
+                Alert.alert('Login efetuado com sucesso!');
+            })
+            //se o login não for bem sucedido, envia um alerta
+            .catch((error) => {
+                Alert.alert('Usuário ou senha inválidos!' + error);
+            });
+    }
+
+
+    //verifica se os campos estão vazios
+    function verifyLogin(email, password) {
+        if (email == '' || password == '') {
+            //Aleta para preencher os campos
+            Alert.alert('Preencha os campos para continuar!');
+            //recarrega envia para a mesma página
+            navigation.navigate('Login');
+        } 
+        // se os campos não estiverem vazios, chama a função callLogin
+        else {
+            callLogin();
+        }
+    }
 
 
     return (
+        //estrutura da página
         <View style={styles.container}>
             <View style={styles.containerImage}>
                 <Image source={require('../../assets/logo.png')} style={styles.image} resizeMode="contain" />
@@ -61,9 +74,13 @@ export default function Login() {
                     secureTextEntry
                 />
 
-                <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                {isLoading && <ActivityIndicator/> }
+
+                {!isLoading &&
+                <TouchableOpacity style={styles.button} onPress={() => verifyLogin(email, password)}>
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
+                }
 
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Register')}>
                     <Text style={styles.registerText}>Cadastre-se</Text>
@@ -72,7 +89,6 @@ export default function Login() {
         </View>
     );
 }
-
 
 const styles = StyleSheet.create({
     container: {
