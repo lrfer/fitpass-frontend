@@ -78,7 +78,7 @@ export default function Login() {
                 {!isLoading &&
                 <TouchableOpacity style={styles.button} onPress={() => 
                 //verifyLogin(email, password)}>
-                navigation.navigate('Trainings')}>
+                navigation.navigate('MainPage')}>
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
                 }

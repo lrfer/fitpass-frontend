@@ -4,6 +4,7 @@ import Login from '../pages/Login';
 import Welcome from '../pages/Welcome';
 import Register from '../pages/Register';
 import Trainings from '../pages/Trainings';
+import MainPage from '../pages/MainPage';
 const Stack = createNativeStackNavigator();
 
 export default function Routes() {
@@ -13,6 +14,7 @@ export default function Routes() {
             <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
             <Stack.Screen name="Register" component={Register} options={{headerShown: false}}/>
             <Stack.Screen name="Trainings" component={Trainings} options={{headerShown: false}}/>
+            <Stack.Screen name="MainPage" component={MainPage} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 }
