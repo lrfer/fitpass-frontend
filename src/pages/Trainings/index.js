@@ -39,8 +39,9 @@ export default function Trainings() {
                         </View>
                         <View>
                             <Text style={styles.exerciseText}>
-                                {item.target_muscle}{"\nExercício: "}{item.name}
-                                {"\nSéries: "}{item.sets}{" - Repetições: "}{item.reps}
+                                {item.target_muscle}
+                                {"\nExercício: " + item.name}
+                                {"\nSéries: " + item.sets}{" | Repetições: " + item.reps}
                             </Text>
                         </View>
                     </TouchableOpacity>
