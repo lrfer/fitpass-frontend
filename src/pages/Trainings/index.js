@@ -8,10 +8,6 @@ export default function Trainings() {
     const [exercices, setexercices] = useState([])
 
 
-
-
-
-
     useEffect(() => {
         fetch('https://www.balldontlie.io/api/v1/players?per_page=100')
             .then((response) => response.json())
@@ -42,18 +38,29 @@ export default function Trainings() {
             <FlashList
                 data={exercices}
                 renderItem={({ item }) => (
-                    <TouchableOpacity style={{ marginTop: 20, marginLeft: 12, }}>
+                    <TouchableOpacity style={{ 
+                        marginTop: 5, 
+                        marginLeft: 10,
+                        marginRight:6
+                    
+                    }}>
                         <View>
-                            <Text style={{
+                        <Text style={{
                                 fontSize: 18,
-                                height: 60,
-                                backgroundColor: '#7159c1',
+                                height: 90,
+                                backgroundColor: '#BFB2EA',
                                 borderRadius: 10,
+                                paddingVertical: 10,
                                 paddingHorizontal: 10,
-                                color: '#ffffff',
-
+                                color: '#000000',
+                                textAlign: 'left',
+                                
                             }}>
-                                {item.first_name} {item.last_name}{"\\\\"} {item.team.full_name}
+                                {/* alterar os campos first_name para target_muscle | team.full_name para name | 
+                                                            position para sets | team.abbreviation para reps  */}
+                                {item.last_name}{"\\\\"} {item.team.full_name}
+                                {'\n'}{'\n'}
+                                {item.position} {"\\\\"} {item.team.abbreviation}
                             </Text>
                         </View>
                     </TouchableOpacity>
