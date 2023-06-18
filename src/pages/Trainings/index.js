@@ -1,66 +1,46 @@
 import React from "react";
-import { Text, View, StyleSheet, Touchable, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import { useState, useEffect } from 'react';
 
 export default function Trainings() {
-
-    const [exercices, setexercices] = useState([])
-
+    const [exercices, setExercices] = useState([]);
 
     useEffect(() => {
-        fetch('https://www.balldontlie.io/api/v1/players?per_page=100')
+        fetch('https://e405-191-55-181-188.ngrok-free.app/exercise/getAll')
             .then((response) => response.json())
-            .then((data) => setexercices(data.data))
-            .catch((error) => console.log(error))
+            .then((data) => setExercices(data))
+            .catch((error) => console.log(error));
     }, []);
 
+    const getImageSource = (targetMuscle) => {
+        const muscleMap = {
+            Costas: require('../../assets/musculos/Costas.png'),
+            Peito: require('../../assets/musculos/Peito.png'),
+            Ombro: require('../../assets/musculos/Ombro.png'),
+            Bicepes: require('../../assets/musculos/Bicepes.png'),
+            Quadricipes: require('../../assets/musculos/Quadricipes.png')
+            // Adicione mais mapeamentos de músculos conforme necessário
+        };
+
+        return muscleMap[targetMuscle] || null; // Retorna a imagem correspondente ou null se não for encontrada
+    };
+
     return (
-
-
         <View style={styles.container}>
-
-
-            <Text style={{
-                fontSize: 28,
-                fontWeight: 'bold',
-                padding: 20,
-                textAlign: 'center',
-                color: '#ffffff',
-                backgroundColor: '#7159c1',
-            }}
-            >
-                Exercices
-            </Text>
-
-
+            <Text style={styles.headerText}>Treino A</Text>
 
             <FlashList
                 data={exercices}
                 renderItem={({ item }) => (
-                    <TouchableOpacity style={{ 
-                        marginTop: 5, 
-                        marginLeft: 10,
-                        marginRight:6
-                    
-                    }}>
+                    <TouchableOpacity style={styles.listItem}>
+                        <View style={styles.imageContainer}>
+                            <Image source={getImageSource(item.target_muscle)} style={styles.tinyLogo} />
+                        </View>
                         <View>
-                        <Text style={{
-                                fontSize: 18,
-                                height: 90,
-                                backgroundColor: '#BFB2EA',
-                                borderRadius: 10,
-                                paddingVertical: 10,
-                                paddingHorizontal: 10,
-                                color: '#000000',
-                                textAlign: 'left',
-                                
-                            }}>
-                                {/* alterar os campos first_name para target_muscle | team.full_name para name | 
-                                                            position para sets | team.abbreviation para reps  */}
-                                {item.last_name}{"\\\\"} {item.team.full_name}
-                                {'\n'}{'\n'}
-                                {item.position} {"\\\\"} {item.team.abbreviation}
+                            <Text style={styles.exerciseText}>
+                                {item.target_muscle}{"\nExercício: "}{item.name}
+                                {"\nSéries: "}{item.sets}{" - Repetições: "}{item.reps}
                             </Text>
                         </View>
                     </TouchableOpacity>
@@ -68,60 +48,47 @@ export default function Trainings() {
                 estimatedItemSize={200}
             />
         </View>
-
     );
-
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
-
     },
-    containerHeader: {
-        paddingHorizontal: '5%',
-        paddingTop: '10%',
-
-    },
-    containerForm: {
-        paddingHorizontal: '5%',
-
-    },
-    title: {
-        fontSize: 18,
+    headerText: {
+        fontSize: 28,
         fontWeight: 'bold',
-        color: '#000000',
+        padding: 20,
         textAlign: 'center',
+        color: '#ffffff',
+        backgroundColor: '#7159c1',
     },
-    input: {
-        backgroundColor: '#f2f2f2',
+    listItem: {
+        flexDirection: 'row',
+        backgroundColor: '#BFB2EA',
         borderRadius: 10,
         paddingVertical: 10,
-        paddingHorizontal: 20,
-        marginVertical: '2%',
-        width: '100%',
+        paddingHorizontal: 10,
+        height: 100,
+        marginTop: 5,
+        marginLeft: 10,
+        marginRight: 6,
     },
-    button: {
-        width: '60%',
-        backgroundColor: '#7159c1',
-        borderRadius: 40,
-        paddingVertical: 10,
-        marginVertical: '2%',
+    imageContainer: {
+        marginRight: 10,
     },
-    buttonText: {
+    tinyLogo: {
+        width: 75,
+        height: 75,
+        borderRadius: 10,
+    },
+    exerciseText: {
         fontSize: 16,
-        fontWeight: 'bold',
-        color: '#ffffff',
-        textAlign: 'center',
+        color: '#000000',
+        textAlign: 'left',
+        paddingLeft: 20,
+        maxHeight: 95,
+        maxWidth: 260,
     },
-    loginText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#ffffff',
-        textAlign: 'center',
-    },
-    exercices: {
-        backgroundColor: "#ff000"
-    }
-})
+});
