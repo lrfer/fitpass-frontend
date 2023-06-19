@@ -36,20 +36,25 @@ const SideMenu = ({ onClose }) => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 180,
+    top: 75,
     right: 0,
     width: '70%',
     height: '60%', // Define a altura desejada para o menu
     backgroundColor: '#fff',
     padding: 16,
     bottom: 0, // Posiciona o menu na parte inferior
+    borderRadius: 8,
   },
   menuItem: {
     marginBottom: 16,
     backgroundColor: '#7159c1',
+    padding: 16,
+    borderRadius: 8,
   },
   menuText: {
     color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   }
 });
 

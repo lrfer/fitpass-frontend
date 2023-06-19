@@ -10,8 +10,8 @@ class treatJwt{
           if (token && chaveSecreta) {
             const decoded = jwtDecode(token, chaveSecreta);
             const { UserPerfil } = decoded;
-            const { id, name } = UserPerfil;
-            return { id, name };
+            const { id, name, email, phone } = UserPerfil;
+            return { id, name, email, phone };
           } else {
             console.log('Token ou chave secreta não encontrados no AsyncStorage.');
             return null;

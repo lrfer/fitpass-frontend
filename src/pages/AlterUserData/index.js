@@ -1,18 +1,16 @@
 import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import treatJwt from "../../../services/treatJwt";
 import { useEffect, useState } from 'react';
 
 
-export default function Profile() {
+export default function AlterUserData() {
     const [id, setID] = useState('');
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const navigation = useNavigation();
-
-
 
     useEffect(() => {
         treatJwt.extrairDadosDoToken()
@@ -28,49 +26,52 @@ export default function Profile() {
             });
     }, []);
 
-
     return (
-
         <View style={styles.container}>
+
+
             <View style={styles.header}>
                 <Image source={require('../../assets/placeholder_perfil.png')} style={styles.tinyLogo} />
-                <Text style={styles.title}>Perfil</Text>
+                <Text style={styles.title}>Editar Perfil</Text>
             </View>
-            
+
             <View style={styles.containerDados}>
-                <Text style={styles.dados}>
-                    {"Nome: " + name}
-                </Text>
-                <Text style={styles.dados}>
-                    {"Email: " + email}
-                </Text>
-                <Text style={styles.dados}>
-                    {'Telefone: ' + phone}
-                </Text>
+                <TextInput style={styles.dados} placeholder="Nome" value={name} onChangeText={text => setName(text)} />
+                <TextInput style={styles.dados} placeholder="Email" value={email} onChangeText={text => setEmail(text)} />
+                <TextInput style={styles.dados} placeholder="Telefone" value={phone} onChangeText={text => setPhone(text)} />
             </View>
-
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AlterUserData')}>
-                <Text style={styles.buttonText}>Editar Perfil</Text>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile')}>
+                <Text style={styles.buttonText}>Salvar</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile')}>
+                    <Text style={styles.buttonText}>Cancelar</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MainPage')}>
-                <Text style={styles.buttonText}>Main Page</Text>
-            </TouchableOpacity>
         </View>
     );
-
-
-};
+}
 
 const styles = StyleSheet.create({
+    buttonBack: {
+        backgroundColor: '#7159c1',
+        marginTop: '10%',
+        marginLeft: '5%',
+    },
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
+        alignItems: 'center',
     },
     header: {
         flex: 0.3,
         justifyContent: 'center',
         alignItems: 'center',
+        width: '100%',
+        backgroundColor: '#7159c1',
+    },
+    tinyLogo: {
+        width: 100,
+        height: 100,
         backgroundColor: '#7159c1',
     },
     title: {
@@ -78,12 +79,18 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#000000',
         textAlign: 'center',
+
     },
-    tinyLogo: {
-        width: 100,
-        height: 100,
-        alignSelf: 'center',
-        marginVertical: '3%',
+    containerDados: {
+        flex: 0.7,
+        paddingHorizontal: '5%',
+    },
+    dados: {
+        backgroundColor: '#f2f2f2',
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginVertical: '2%',
     },
     button: {
         width: '60%',
@@ -99,17 +106,5 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         textAlign: 'center',
     },
-    containerDados: {
-        flex: 0.75,
-        paddingHorizontal: '5%',
-        paddingTop: '10%',
-    },
-    dados: {
-        fontSize: 18,
-        fontWeight: 'normal',
-        color: '#a1a1a1',
-        paddingTop: '5%',
-    },
-
 
 });

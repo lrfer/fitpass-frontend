@@ -7,6 +7,8 @@ import Trainings from '../pages/Trainings';
 import MainPage from '../pages/MainPage';
 import Profile from '../pages/Profile';
 import UserConfig from '../pages/UserConfig';
+import AlterUserData from '../pages/AlterUserData';
+import DetalhesTreino from '../pages/DetalhesTreino';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +22,8 @@ export default function Routes() {
             <Stack.Screen name="MainPage" component={MainPage} options={{headerShown: false}}/>
             <Stack.Screen name="Profile" component={Profile} options={{headerShown: false}}/>
             <Stack.Screen name="UserConfig" component={UserConfig} options={{headerShown: false}}/>
+            <Stack.Screen name="AlterUserData" component={AlterUserData} options={{headerShown: false}}/>
+            <Stack.Screen name="DetalhesTreino" component={DetalhesTreino} options={{headerShown: false}}/>
             
         </Stack.Navigator>
     );

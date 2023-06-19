@@ -39,13 +39,13 @@ export default function Register() {
         let data = {
             name: name,
             email: email,
-            phone: phone,
             password: password,
-            birthday: birthday
+            phone: phone,
+            birthday: '1999-12-12'
         }
         //chama a função register do userService
         userService.register(data)
-            //se o login for bem sucedido, mostra um alerta de sucesso e  envia para a página login
+            //se o registro for bem sucedido, mostra um alerta de sucesso e  envia para a página login
             .then((response) => {
                 Alert.alert('Cadastro realizado com sucesso!');
                 navigation.navigate('Login');
@@ -80,7 +80,7 @@ export default function Register() {
                 <TextInput style={styles.input} placeholder="E-mail" />
                 <TextInput style={styles.input} placeholder="Senha" />
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => callRegister()}>
                     <Text style={styles.buttonText}>Registrar</Text>
                 </TouchableOpacity>
 
