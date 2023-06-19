@@ -3,14 +3,48 @@ import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import { useState, useEffect } from 'react';
 import SideMenu from "./sideMenu";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 export default function MainPage() {
     const [user, setUser] = useState([]);
     const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+    const [data, setData] = useState([]);
+    AsyncStorage.getItem('token').then((value) => {
+        if (value !== null) {
+            setData(value);
+        } else {
+            console.log("Não encontrado.");
+        }
+    })
+        .catch((error) => {
+            console.log(error);
+        });
+    function extrairDadosDoToken(token) {
+        const { UserPerfil } = token;
+        const { id, name } = UserPerfil;
+
+        return { id, name };
+    }
+
 
     const toggleSideMenu = () => {
         setIsSideMenuOpen(!isSideMenuOpen);
     };
+    const jwt = require('jsonwebtoken');
+
+    const token = data;
+    const {id,name} = extrairDadosDoToken(token);
+
+    jwt.verify(token, '!@387FA8S78HUGFIAGVCU12#$u', (err, decoded) => {
+        if (err) {
+            // Ocorreu um erro na verificação do token
+            console.error(err);
+        } else {
+            // O token é válido e foi decodificado com sucesso
+            console.log(decoded);
+        }
+    });
 
     useEffect(() => {
         fetch('https://e405-191-55-181-188.ngrok-free.app/exercise/getAll')
@@ -18,12 +52,12 @@ export default function MainPage() {
             .then((data) => setUser(data))
             .catch((error) => console.log(error));
     }, []);
-    const [exercices, setExercices] = useState([]);
+    const [trainings, setTrainings] = useState([]);
 
     useEffect(() => {
         fetch('https://e405-191-55-181-188.ngrok-free.app/exercise/getAll')
             .then((response) => response.json())
-            .then((data) => setExercices(data))
+            .then((data) => setTrainings(data))
             .catch((error) => console.log(error));
     }, []);
 
@@ -35,18 +69,18 @@ export default function MainPage() {
                 <Image source={require('../../assets/musculos/Costas.png')} style={styles.tinyLogo} />
 
                 <Text style={styles.exerciseText}>
-                    {"\nBem-Vindo,\n\n " + user.name + "!"}
+                    {"\nBem-Vindo,\n\n " + name + "!"}
                 </Text>
+                <TouchableOpacity style={styles.menuButton} onPress={toggleSideMenu}>
+                    <Image source={require('../../assets/menu.png')} style={styles.menuImage} />
+                </TouchableOpacity>
+
+                {isSideMenuOpen && <SideMenu toggleSideMenu={toggleSideMenu} />}
             </View>
 
-            <TouchableOpacity style={styles.menuButton} onPress={toggleSideMenu}>
-                <Image source={require('../../assets/menu.png')} style={styles.menuImage} />
-            </TouchableOpacity>
-
-            {isSideMenuOpen && <SideMenu toggleSideMenu={toggleSideMenu} />}
 
 
-            <FlashList data={exercices}
+            <FlashList data={trainings}
                 renderItem={({ item }) => (
                     <TouchableOpacity style={styles.listItem}>
                         <View style={styles.imageContainer}>
@@ -75,7 +109,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         backgroundColor: '#7159c1',
         height: 64,
-      },
+    },
     headerText: {
         flexDirection: 'row',
         fontSize: 28,
