@@ -1,12 +1,11 @@
-import React from "react";
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, } from 'react-native';
+import React, { useState } from "react";
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import DateTimePicker from '@react-native-community/datetimepicker'
-import { useState } from "react";
-import { Alert } from "react-native";
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 import userService from "../../../services/userService";
-export default function Register() {
 
+export default function Register() {
     const navigation = useNavigation();
     const [birthday, setBirthday] = useState(new Date());
     const [name, setName] = useState('');
@@ -15,52 +14,46 @@ export default function Register() {
     const [password, setPassword] = useState('');
     const [showPicker, setShowPicker] = useState(false);
 
-
     const showDatepicker = () => {
         setShowPicker(!showPicker);
     };
 
-    //verifica se os campos estão vazios
+    // Verifica se os campos estão vazios
     function verifyRegister(name, phone, email, password) {
-        if (name == '' || phone == '' || email == '' || password == '') {
-            //Aleta para preencher os campos
+        if (name === '' || phone === '' || email === '' || password === '') {
+            // Alerta para preencher os campos
             Alert.alert('Preencha os campos para continuar!');
-            //recarrega envia para a mesma página
+            // Recarrega e envia para a mesma página
             navigation.navigate('Register');
-        }
-        // se os campos não estiverem vazios, chama a função callRegister
-        else {
+        } else {
             callRegister();
         }
     }
 
     const callRegister = () => {
-        // cria um objeto com os dados do usuário
+        // Cria um objeto com os dados do usuário
         let data = {
             name: name,
             email: email,
             password: password,
             phone: phone,
-            birthday: '1999-12-12'
-        }
-        //chama a função register do userService
-        userService.register(data)
-            //se o registro for bem sucedido, mostra um alerta de sucesso e  envia para a página login
+            birthday: moment(birthday).format('YYYY-MM-DD HH:mm:ss')
+        };
+
+        // Chama a função register do userService
+        userService
+            .register(data)
             .then((response) => {
+                // Se o registro for bem sucedido, mostra um alerta de sucesso e redireciona para a página de login
                 Alert.alert('Cadastro realizado com sucesso!');
                 navigation.navigate('Login');
-            }
-            )
-            //se o login não for bem sucedido, envia um alerta
+            })
             .catch((error) => {
-                Alert.alert('Erro ao cadastrar!' + error);
-            }
-            );
-
+                // Se o registro não for bem sucedido, mostra um alerta com o erro
+                Alert.alert('Erro ao cadastrar: ' + error);
+                console.log(error);
+            });
     }
-
-
-
 
     return (
         <View style={styles.container}>
@@ -69,22 +62,43 @@ export default function Register() {
             </View>
 
             <View style={styles.containerForm}>
-                <TextInput style={styles.input} placeholder="Nome" />
-                <TextInput style={styles.input} placeholder="Telefone" />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Nome"
+                    onChangeText={(text) => setName(text)}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Telefone"
+                    onChangeText={(text) => setPhone(text)}
+                />
 
                 {showPicker && (
-                    <DateTimePicker mode="date" display="default" onChange={setDate} value={date} />
+                    <DateTimePicker
+                        mode="date"
+                        display="default"
+                        onChange={(event, date) => setBirthday(date)}
+                        value={birthday}
+                    />
                 )}
 
+                <TextInput
+                    style={styles.input}
+                    placeholder="E-mail"
+                    onChangeText={(text) => setEmail(text)}
+                />
+                <TextInput
+                    style={styles.input}
+                    secureTextEntry
+                    placeholder="Senha"
+                    onChangeText={(text) => setPassword(text)}
+                />
 
-                <TextInput style={styles.input} placeholder="E-mail" />
-                <TextInput style={styles.input} placeholder="Senha" />
-
-                <TouchableOpacity style={styles.button} onPress={() => callRegister()}>
+                <TouchableOpacity style={styles.button} onPress={() => verifyRegister(name, phone, email, password)}>
                     <Text style={styles.buttonText}>Registrar</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')} >
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
                     <Text style={styles.loginText}>Já tenho uma conta</Text>
                 </TouchableOpacity>
             </View>
