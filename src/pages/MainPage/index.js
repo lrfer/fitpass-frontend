@@ -13,20 +13,6 @@ export default function MainPage() {
     const toggleSideMenu = () => {
         setIsSideMenuOpen(!isSideMenuOpen);
     };
-    const jwt = require('jsonwebtoken');
-
-    const token = data;
-    const {id,name} = extrairDadosDoToken(token);
-
-    jwt.verify(token, '!@387FA8S78HUGFIAGVCU12#$u', (err, decoded) => {
-        if (err) {
-            // Ocorreu um erro na verificação do token
-            console.error(err);
-        } else {
-            // O token é válido e foi decodificado com sucesso
-            console.log(decoded);
-        }
-    });
 
     useEffect(() => {
         fetch('https://e405-191-55-181-188.ngrok-free.app/exercise/getAll')
