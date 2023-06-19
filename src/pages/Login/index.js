@@ -20,7 +20,7 @@ export default function Login() {
         userService.login(data)
             //se o login for bem sucedido, envia para a página Home
             .then((response) => {
-                Alert.alert('Login efetuado com sucesso!');
+                navigation.navigate('MainPage');
             })
             //se o login não for bem sucedido, envia um alerta
             .catch((error) => {
@@ -77,8 +77,7 @@ export default function Login() {
 
                 {!isLoading &&
                 <TouchableOpacity style={styles.button} onPress={() => 
-                //verifyLogin(email, password)}>
-                navigation.navigate('MainPage')}>
+                verifyLogin(email, password)}>
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
                 }

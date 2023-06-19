@@ -2,9 +2,15 @@ import React from "react";
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import { useState, useEffect } from 'react';
+import SideMenu from "./sideMenu";
 
 export default function MainPage() {
     const [user, setUser] = useState([]);
+    const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+
+    const toggleSideMenu = () => {
+        setIsSideMenuOpen(!isSideMenuOpen);
+    };
 
     useEffect(() => {
         fetch('https://e405-191-55-181-188.ngrok-free.app/exercise/getAll')
@@ -22,16 +28,22 @@ export default function MainPage() {
     }, []);
 
     return (
-        
+
         <View style={styles.container} data={user}>
             <View style={styles.headerText}>
 
                 <Image source={require('../../assets/musculos/Costas.png')} style={styles.tinyLogo} />
-            
+
                 <Text style={styles.exerciseText}>
-                    {"\nBem-Vindo,\n\n " + user.name+ "!"}
+                    {"\nBem-Vindo,\n\n " + user.name + "!"}
                 </Text>
             </View>
+
+            <TouchableOpacity style={styles.menuButton} onPress={toggleSideMenu}>
+                <Image source={require('../../assets/menu.png')} style={styles.menuImage} />
+            </TouchableOpacity>
+
+            {isSideMenuOpen && <SideMenu toggleSideMenu={toggleSideMenu} />}
 
 
             <FlashList data={exercices}
@@ -56,6 +68,14 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#ffffff',
     },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        backgroundColor: '#7159c1',
+        height: 64,
+      },
     headerText: {
         flexDirection: 'row',
         fontSize: 28,
@@ -90,5 +110,12 @@ const styles = StyleSheet.create({
         color: 'white',
         paddingLeft: 30,
         maxWidth: 200,
+    },
+    menuButton: {
+        marginLeft: 'auto',
+    },
+    menuImage: {
+        width: 30,
+        height: 30,
     },
 });

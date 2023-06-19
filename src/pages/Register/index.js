@@ -1,9 +1,19 @@
 import React from "react";
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import DatePicker from 'react-native-datepicker';
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { useState } from "react";
 export default function Register() {
+
     const navigation = useNavigation();
+    const [date, setDate] = useState(new Date());
+    const [showPicker, setShowPicker] = useState(false);
+
+    const showDatepicker = () => {
+        setShowPicker(!showPicker);
+    };
+
+    
 
     return (
         <View style={styles.container}>
@@ -14,7 +24,12 @@ export default function Register() {
             <View style={styles.containerForm}>
                 <TextInput style={styles.input} placeholder="Nome" />
                 <TextInput style={styles.input} placeholder="Telefone" />
-                <DatePicker format = "DD-MM-YYYY"  minDate="12-06-2023" style={styles.input} placeholder="Data de Nascimento" />
+
+                {showPicker && (
+                <DateTimePicker mode="date" display="default" onChange={setDate} value={date} />
+                )}
+
+
                 <TextInput style={styles.input} placeholder="E-mail" />
                 <TextInput style={styles.input} placeholder="Senha" />
 
