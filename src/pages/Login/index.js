@@ -9,6 +9,20 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    //verifica se os campos estão vazios
+    function verifyLogin(email, password) {
+        if (email == '' || password == '') {
+            //Aleta para preencher os campos
+            Alert.alert('Preencha os campos para continuar!');
+            //recarrega envia para a mesma página
+            navigation.navigate('Login');
+        } 
+        // se os campos não estiverem vazios, chama a função callLogin
+        else {
+            callLogin();
+        }
+    }
+
     const callLogin = () => {
         // cria um objeto com os dados do usuário
         let data = {
@@ -27,22 +41,6 @@ export default function Login() {
                 Alert.alert('Usuário ou senha inválidos!' + error);
             });
     }
-
-
-    //verifica se os campos estão vazios
-    function verifyLogin(email, password) {
-        if (email == '' || password == '') {
-            //Aleta para preencher os campos
-            Alert.alert('Preencha os campos para continuar!');
-            //recarrega envia para a mesma página
-            navigation.navigate('Login');
-        } 
-        // se os campos não estiverem vazios, chama a função callLogin
-        else {
-            callLogin();
-        }
-    }
-
 
     return (
         //estrutura da página

@@ -3,11 +3,13 @@ import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import { useState, useEffect } from 'react';
 import SideMenu from "./sideMenu";
+import treatJwt from "../../../services/treatJwt";
 
 export default function MainPage() {
     const [user, setUser] = useState([]);
+    const [id, setID] = useState('');
+    const [name, setName] = useState('');
     const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
-
     const toggleSideMenu = () => {
         setIsSideMenuOpen(!isSideMenuOpen);
     };
@@ -27,6 +29,19 @@ export default function MainPage() {
             .catch((error) => console.log(error));
     }, []);
 
+    useEffect(()=> {
+        treatJwt.extrairDadosDoToken()
+        .then((response) => {
+            if (response) {
+                setID(response.id);
+                setName(response.name);
+            } else {
+                console.log('Não foi possível extrair os dados do token.');
+            }
+        });
+    }, []);
+
+
     return (
 
         <View style={styles.container} data={user}>
@@ -35,7 +50,7 @@ export default function MainPage() {
                 <Image source={require('../../assets/musculos/Costas.png')} style={styles.tinyLogo} />
 
                 <Text style={styles.exerciseText}>
-                    {"\nBem-Vindo,\n\n " + user.name + "!"}
+                    {"\nBem-Vindo,\n\n " + name + "!"}
                 </Text>
             </View>
 
@@ -75,7 +90,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         backgroundColor: '#7159c1',
         height: 64,
-      },
+    },
     headerText: {
         flexDirection: 'row',
         fontSize: 28,
