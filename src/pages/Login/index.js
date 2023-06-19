@@ -74,8 +74,7 @@ export default function Login() {
                 {isLoading && <ActivityIndicator/> }
 
                 {!isLoading &&
-                <TouchableOpacity style={styles.button} onPress={() => 
-                verifyLogin(email, password)}>
+                <TouchableOpacity style={styles.button} onPress={() => verifyLogin(email, password)}>
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
                 }

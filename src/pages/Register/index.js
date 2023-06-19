@@ -3,17 +3,64 @@ import { Text, View, StyleSheet, TextInput, TouchableOpacity, } from 'react-nati
 import { useNavigation } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { useState } from "react";
+import { Alert } from "react-native";
+import userService from "../../../services/userService";
 export default function Register() {
 
     const navigation = useNavigation();
-    const [date, setDate] = useState(new Date());
+    const [birthday, setBirthday] = useState(new Date());
+    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [showPicker, setShowPicker] = useState(false);
+
 
     const showDatepicker = () => {
         setShowPicker(!showPicker);
     };
 
-    
+    //verifica se os campos estão vazios
+    function verifyRegister(name, phone, email, password) {
+        if (name == '' || phone == '' || email == '' || password == '') {
+            //Aleta para preencher os campos
+            Alert.alert('Preencha os campos para continuar!');
+            //recarrega envia para a mesma página
+            navigation.navigate('Register');
+        }
+        // se os campos não estiverem vazios, chama a função callRegister
+        else {
+            callRegister();
+        }
+    }
+
+    const callRegister = () => {
+        // cria um objeto com os dados do usuário
+        let data = {
+            name: name,
+            email: email,
+            phone: phone,
+            password: password,
+            birthday: birthday
+        }
+        //chama a função register do userService
+        userService.register(data)
+            //se o login for bem sucedido, mostra um alerta de sucesso e  envia para a página login
+            .then((response) => {
+                Alert.alert('Cadastro realizado com sucesso!');
+                navigation.navigate('Login');
+            }
+            )
+            //se o login não for bem sucedido, envia um alerta
+            .catch((error) => {
+                Alert.alert('Erro ao cadastrar!' + error);
+            }
+            );
+
+    }
+
+
+
 
     return (
         <View style={styles.container}>
@@ -26,7 +73,7 @@ export default function Register() {
                 <TextInput style={styles.input} placeholder="Telefone" />
 
                 {showPicker && (
-                <DateTimePicker mode="date" display="default" onChange={setDate} value={date} />
+                    <DateTimePicker mode="date" display="default" onChange={setDate} value={date} />
                 )}
 
 

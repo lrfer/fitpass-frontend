@@ -1,18 +1,28 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import userService from '../../../services/userService';
+
+
 
 const SideMenu = ({ onClose }) => {
+  const navigation = useNavigation();
+  function Logout() {
+    userService.logout();
+    navigation.navigate('Welcome');
+  }
+
   return (
     <View style={styles.container}>
       {/* Conteúdo do menu lateral */}
       <TouchableOpacity style={styles.menuItem} onPress={onClose}>
-        <Text>Opção 1</Text>
+        <Text style={styles.menuText}>Perfil</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem} onPress={onClose}>
-        <Text>Opção 2</Text>
+      <TouchableOpacity style={styles.menuItem} onPress={() => console.log("botão")}>
+        <Text style={styles.menuText}>Configurações</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem} onPress={onClose}>
-        <Text>Opção 3</Text>
+      <TouchableOpacity style={styles.menuItem} onPress={() => Logout()}>
+        <Text style={styles.menuText}>Logout</Text>
       </TouchableOpacity>
     </View>
   );
@@ -31,7 +41,11 @@ const styles = StyleSheet.create({
   },
   menuItem: {
     marginBottom: 16,
+    backgroundColor: '#7159c1',
   },
+  menuText: {
+    color: '#fff',
+  }
 });
 
 export default SideMenu;

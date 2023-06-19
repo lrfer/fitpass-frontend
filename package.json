@@ -20,10 +20,7 @@
     "expo": "~48.0.18",
     "expo-status-bar": "~1.4.4",
     "jsonwebtoken": "^9.0.0",
-<<<<<<< HEAD
     "jwt-decode": "^3.1.2",
-=======
->>>>>>> 907cbac8cd0a751921f72c65f5e7adb9c46fbb1a
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-datepicker": "^1.7.2",

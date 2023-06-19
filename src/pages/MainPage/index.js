@@ -3,42 +3,43 @@ import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import { useState, useEffect } from 'react';
 import SideMenu from "./sideMenu";
+import treatJwt from "../../../services/treatJwt";
 
 export default function MainPage() {
     const [user, setUser] = useState([]);
     const [id, setID] = useState('');
     const [name, setName] = useState('');
+    const [trainings, setTrainings] = useState([]);
     const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
-
     const toggleSideMenu = () => {
         setIsSideMenuOpen(!isSideMenuOpen);
     };
 
     useEffect(() => {
-        fetch('https://e405-191-55-181-188.ngrok-free.app/exercise/getAll')
+        fetch('https://089e-191-55-18-27.ngrok-free.app/exercise/getAll')
             .then((response) => response.json())
             .then((data) => setUser(data))
-            .catch((error) => console.log(error));
+            .catch((error) => console.log("UseEffect1 " + error));
     }, []);
-    const [trainings, setTrainings] = useState([]);
+
 
     useEffect(() => {
-        fetch('https://e405-191-55-181-188.ngrok-free.app/exercise/getAll')
+        fetch('https://089e-191-55-18-27.ngrok-free.app/exercise/getAll')
             .then((response) => response.json())
             .then((data) => setTrainings(data))
-            .catch((error) => console.log(error));
+            .catch((error) => console.log("useEffect2 " + error));
     }, []);
 
-    useEffect(()=> {
+    useEffect(() => {
         treatJwt.extrairDadosDoToken()
-        .then((response) => {
-            if (response) {
-                setID(response.id);
-                setName(response.name);
-            } else {
-                console.log('Não foi possível extrair os dados do token.');
-            }
-        });
+            .then((response) => {
+                if (response) {
+                    setID(response.id);
+                    setName(response.name);
+                } else {
+                    console.log('Não foi possível extrair os dados do token.');
+                }
+            });
     }, []);
 
 
@@ -47,7 +48,7 @@ export default function MainPage() {
         <View style={styles.container} data={user}>
             <View style={styles.headerText}>
 
-                <Image source={require('../../assets/musculos/Costas.png')} style={styles.tinyLogo} />
+                <Image source={require('../../assets/placeholder_perfil.png')} style={styles.tinyLogo} />
 
                 <Text style={styles.exerciseText}>
                     {"\nBem-Vindo,\n\n " + name + "!"}
@@ -55,25 +56,28 @@ export default function MainPage() {
                 <TouchableOpacity style={styles.menuButton} onPress={toggleSideMenu}>
                     <Image source={require('../../assets/menu.png')} style={styles.menuImage} />
                 </TouchableOpacity>
-
-                {isSideMenuOpen && <SideMenu toggleSideMenu={toggleSideMenu} />}
             </View>
 
 
 
-            <FlashList data={trainings}
-                renderItem={({ item }) => (
-                    <TouchableOpacity style={styles.listItem}>
-                        <View style={styles.imageContainer}>
-                        </View>
-                        <View>
+            <FlashList data={trainings} renderItem={({ item }) => (
+                <TouchableOpacity style={styles.listItem}>
+                    <View>
+                        <Text style={styles.exerciseText}>
+                            {item.target_muscle}
+                            {"\nExercício: " + item.name}
+                            {"\nSéries: " + item.sets}{" | Repetições: " + item.reps}
+                        </Text>
+                    </View>
+                    <View>
 
 
-                        </View>
-                    </TouchableOpacity>
-                )}
+                    </View>
+                </TouchableOpacity>
+            )}
                 estimatedItemSize={200}
             />
+            {isSideMenuOpen && <SideMenu toggleSideMenu={toggleSideMenu} />}
         </View>
     );
 }
