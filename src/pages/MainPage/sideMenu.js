@@ -7,21 +7,26 @@ import userService from '../../../services/userService';
 
 const SideMenu = ({ onClose }) => {
   const navigation = useNavigation();
-  function Logout() {
+
+  function logoutAndNavigateToWelcome() {
     userService.logout();
     navigation.navigate('Welcome');
+  }
+
+  function navigateTo(screen) {
+    navigation.navigate(screen);
   }
 
   return (
     <View style={styles.container}>
       {/* Conteúdo do menu lateral */}
-      <TouchableOpacity style={styles.menuItem} onPress={onClose}>
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('Profile')}>
         <Text style={styles.menuText}>Perfil</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem} onPress={() => console.log("botão")}>
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('UserConfig')}>
         <Text style={styles.menuText}>Configurações</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem} onPress={() => Logout()}>
+      <TouchableOpacity style={styles.menuItem} onPress={logoutAndNavigateToWelcome}>
         <Text style={styles.menuText}>Logout</Text>
       </TouchableOpacity>
     </View>
