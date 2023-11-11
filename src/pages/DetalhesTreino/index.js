@@ -1,18 +1,30 @@
 import React from "react";
 import { Text, View, StyleSheet } from 'react-native';
+import { FlashList } from "@shopify/flash-list";
 
 export default function DetalhesTreino({ route }) {
-  const { treino } = route.params;
+  const { exerciseData } = route.params;
+
+  const renderItem = ({ item }) => {
+    return (
+      <View style={styles.exerciseItem}>
+        <Text style={styles.exerciseName}>{item.name}</Text>
+        <Text style={styles.exerciseDescription}>{item.description}</Text>
+        {/* Renderizar outros detalhes do exercício aqui */}
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{treino.name}</Text>
-      <Text>Target Muscle: {treino.target_muscle}</Text>
-      <Text>Machine: {treino.machine}</Text>
-      <Text>Comment: {treino.comment}</Text>
-      <Text>Reps: {treino.reps}</Text>
-      <Text>Sets: {treino.sets}</Text>
-      <Text>Rest Time: {treino.restTime}</Text>
+      #
+      <Text style={styles.title}>Detalhes do Treino</Text>
+      <FlashList
+        data={exerciseData}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        estimatedItemSize={200}
+      />
     </View>
   );
 }
@@ -20,13 +32,25 @@ export default function DetalhesTreino({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 16,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+  },
+  exerciseItem: {
+    backgroundColor: '#BFB2EA',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 10,
+  },
+  exerciseName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  exerciseDescription: {
+    fontSize: 16,
   },
 });

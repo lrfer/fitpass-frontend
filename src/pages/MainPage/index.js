@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import SideMenu from "./sideMenu";
 import treatJwt from "../../../services/treatJwt";
+import { useNavigation } from "@react-navigation/native";
 
 export default function MainPage() {
   const [user, setUser] = useState([]);
@@ -11,6 +12,7 @@ export default function MainPage() {
   const [email, setEmail] = useState('');
   const [trainings, setTrainings] = useState([]);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+  const navigation = useNavigation();
 
   const toggleSideMenu = () => {
     setIsSideMenuOpen(!isSideMenuOpen);
@@ -18,7 +20,7 @@ export default function MainPage() {
 
   const url = 'http://10.14.96.48:3333/';
 
-  // Função para filtrar os treinos
+  //filtrar os treinos
   function filterTrainings(data) {
     if (id) {
       let filtered = data.filter((item) => item.userId === id);
@@ -65,7 +67,7 @@ export default function MainPage() {
         data={trainings}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
-          <TouchableOpacity style={styles.listItem} onPress={() => navigation.navigate('DetalhesTreino',{treino: item})}>
+          <TouchableOpacity style={styles.listItem} onPress={() => navigation.navigate('Trainings')}>
             <View>
               <Text style={styles.exerciseText}>
                 {"Treino " + index+1}

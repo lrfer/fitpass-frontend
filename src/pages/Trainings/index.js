@@ -2,16 +2,28 @@ import React from "react";
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import { useState, useEffect } from 'react';
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
+
+const url = 'http://10.14.96.48:3333/';
 
 export default function Trainings() {
+    const navigation = useNavigation();
     const [exercices, setExercices] = useState([]);
 
+    //função que busca a lista de exercicios na API com axios
     useEffect(() => {
-        fetch('https://e405-191-55-181-188.ngrok-free.app/exercise/getAll')
-            .then((response) => response.json())
-            .then((data) => setExercices(data))
-            .catch((error) => console.log(error));
+        axios.get(url + 'exercise/getAll')
+            .then((response) => {
+                getImageSource
+                setExercices(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }, []);
+
+
 
     const getImageSource = (targetMuscle) => {
         const muscleMap = {
@@ -27,8 +39,16 @@ export default function Trainings() {
     };
 
     return (
+
+        //botão de voltar para a MainPage
+
         <View style={styles.container}>
-            <Text style={styles.headerText}>Treino A</Text>
+            <View style={styles.buttonBack}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MainPage')}>
+                    <Text style={styles.buttonText}>Main Page</Text>
+                </TouchableOpacity>
+            </View>
+            <Text style={styles.headerText}>Treino 1</Text>
 
             <FlashList
                 data={exercices}
@@ -91,5 +111,12 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         maxHeight: 95,
         maxWidth: 260,
+    },
+    buttonBack: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: '#7159c1',
+        height: 50,
     },
 });
