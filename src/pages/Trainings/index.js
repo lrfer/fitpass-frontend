@@ -11,17 +11,29 @@ export default function Trainings() {
     const navigation = useNavigation();
     const [exercices, setExercices] = useState([]);
 
-    //função que busca a lista de exercicios na API com axios
-    useEffect(() => {
-        axios.get(url + 'exercise/getAll')
-            .then((response) => {
-                getImageSource
-                setExercices(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
+    const exercices = [
+        {
+          id: 1,
+          name: 'João Silva',
+          muscle: 'Treinador de Musculação',
+        },
+        {
+          id: 2,
+          name: 'Maria Oliveira',
+          specialty: 'Treinadora de Cardio',
+        },
+        {
+          id: 3,
+          name: 'Carlos Santos',
+          specialty: 'Especialista em Calistenia',
+        },
+        {
+          id: 4,
+          name: 'Ana Souza',
+          specialty: 'Especialista em Treino de Força',
+        },
+        // Adicione mais treinadores conforme necessário
+      ];
 
 
 

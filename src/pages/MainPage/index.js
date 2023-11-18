@@ -18,15 +18,17 @@ export default function MainPage() {
     setIsSideMenuOpen(!isSideMenuOpen);
   };
 
-  const url = 'http://10.14.96.48:3333/';
+  const url = 'http://192.168.1.11:3333/';
 
   //filtrar os treinos
   function filterTrainings(data) {
     if (id) {
       let filtered = data.filter((item) => item.userId === id);
       console.log(filtered);
+
       return filtered;
     } else {
+      console.log('Não foi possível filtrar os treinos.');
       return []; // Retorna um array vazio caso não haja um `id`
     }
   }

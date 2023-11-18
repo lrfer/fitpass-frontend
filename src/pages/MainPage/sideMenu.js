@@ -24,7 +24,7 @@ const SideMenu = ({ onClose }) => {
         <Text style={styles.menuText}>Perfil</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('FindTrainer')}>
-        <Text style={styles.menuText}>Prucurar treinadores</Text>
+        <Text style={styles.menuText}>Procurar treinadores</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.menuItem} onPress={() => navigateTo('UserConfig')}>
         <Text style={styles.menuText}>Configurações</Text>

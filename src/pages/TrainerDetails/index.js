@@ -19,7 +19,6 @@ const TrainerDetails = ({ route, navigation }) => {
         <Text style={styles.trainerName}>{trainer.name}</Text>
         <Text style={styles.trainerSpecialty}>{trainer.specialty}</Text>
         <Text style={styles.trainerDescription}>
-          {/* Adicione a descrição do treinador aqui */}
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </Text>
         <Text style={styles.trainerCREF}>
@@ -95,6 +94,13 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  trainerImage: {
+    borderRadius: 40,
+    width: 100,
+    height: 100,
+    alignSelf: 'center',
+    marginVertical: '3%',
   },
 });
 
