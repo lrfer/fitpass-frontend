@@ -7,20 +7,11 @@ import userService from "../../../services/userService";
 
 
 export default function Profile() {
-//busca email e phone do usuario via useService
-
-
-
-
-
     const [id, setID] = useState('');
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const navigation = useNavigation();
-
-
-
 
     useEffect(() => {
         treatJwt.extrairDadosDoToken()

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const url = 'http://192.168.1.11:3333/';
+const url = 'http://10.14.96.48:3333/';
 const timeout = 3000;
 chaveSecreta = '!@387FA8S78HUGFIAGVCU12#$u'
 class UserService {

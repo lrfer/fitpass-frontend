@@ -1,134 +1,148 @@
-import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { FlashList } from "@shopify/flash-list";
-import { useState, useEffect } from 'react';
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 
-const url = 'http://10.14.96.48:3333/';
 
-export default function Trainings() {
+const ExerciseListPage = () => {
     const navigation = useNavigation();
-    const [exercices, setExercices] = useState([]);
-
-    const exercices = [
+    const [exercises, setExercises] = useState([]);
+    const sampleExercises = [
         {
-          id: 1,
-          name: 'João Silva',
-          muscle: 'Treinador de Musculação',
+            id: '1',
+            name: 'Supino Reto',
+            target_muscle: 'Peitoral',
+            machine: 'Banco de Supino',
+            reps: 10,
+            sets: 3,
+            restTime: 60,
         },
         {
-          id: 2,
-          name: 'Maria Oliveira',
-          specialty: 'Treinadora de Cardio',
+            id: '2',
+            name: 'Agachamento',
+            target_muscle: 'Pernas',
+            machine: 'Sem Equipamento',
+            reps: 12,
+            sets: 4,
+            restTime: 90,
         },
         {
-          id: 3,
-          name: 'Carlos Santos',
-          specialty: 'Especialista em Calistenia',
+            id: '3',
+            name: 'Rosca Direta',
+            target_muscle: 'Braços',
+            machine: 'Barra',
+            reps: 10,
+            sets: 3,
+            restTime: 45,
         },
         {
-          id: 4,
-          name: 'Ana Souza',
-          specialty: 'Especialista em Treino de Força',
+            id: '4',
+            name: 'Prancha',
+            target_muscle: 'Abdômen',
+            machine: 'Sem Equipamento',
+            reps: 60,
+            sets: 2,
+            restTime: 30,
         },
-        // Adicione mais treinadores conforme necessário
-      ];
+        {
+            id: '5',
+            name: 'Elevação Lateral',
+            target_muscle: 'Ombros',
+            machine: 'Halteres',
+            reps: 15,
+            sets: 3,
+            restTime: 45,
+        },
+    ];
 
+    useEffect(() => {
+        setExercises(sampleExercises);
+    }, []);
 
-
-    const getImageSource = (targetMuscle) => {
-        const muscleMap = {
-            Costas: require('../../assets/musculos/Costas.png'),
-            Peito: require('../../assets/musculos/Peito.png'),
-            Ombro: require('../../assets/musculos/Ombro.png'),
-            Bicepes: require('../../assets/musculos/Bicepes.png'),
-            Quadricipes: require('../../assets/musculos/Quadricipes.png')
-            // Adicione mais mapeamentos de músculos conforme necessário
-        };
-
-        return muscleMap[targetMuscle] || null; // Retorna a imagem correspondente ou null se não for encontrada
-    };
+    const renderExerciseItem = ({ item }) => (
+        <TouchableOpacity style={styles.exerciseCard}>
+            <Text style={styles.exerciseName}>{item.name}</Text>
+            <Text style={styles.exerciseText}>{`Alvo: ${item.target_muscle}`}</Text>
+            <Text style={styles.exerciseText}>{`Equipamento: ${item.machine}`}</Text>
+            <Text style={styles.exerciseText}>{`Repetições: ${item.reps}`}</Text>
+            <Text style={styles.exerciseText}>{`Séries: ${item.sets}`}</Text>
+            <Text style={styles.exerciseText}>{`Tempo de descanso: ${item.restTime} segundos`}</Text>
+        </TouchableOpacity>
+    );
 
     return (
 
-        //botão de voltar para a MainPage
-
         <View style={styles.container}>
-            <View style={styles.buttonBack}>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MainPage')}>
-                    <Text style={styles.buttonText}>Main Page</Text>
+            <View style={styles.header}>
+                <TouchableOpacity
+                    style={styles.backButton}
+                    onPress={() => navigation.navigate('MainPage')}
+                >
+                    <Text style={styles.backButtonText}>Voltar</Text>
                 </TouchableOpacity>
             </View>
-            <Text style={styles.headerText}>Treino 1</Text>
-
-            <FlashList
-                data={exercices}
-                renderItem={({ item }) => (
-                    <TouchableOpacity style={styles.listItem}>
-                        <View style={styles.imageContainer}>
-                            <Image source={getImageSource(item.target_muscle)} style={styles.tinyLogo} />
-                        </View>
-                        <View>
-                            <Text style={styles.exerciseText}>
-                                {item.target_muscle}
-                                {"\nExercício: " + item.name}
-                                {"\nSéries: " + item.sets}{" | Repetições: " + item.reps}
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                )}
-                estimatedItemSize={200}
+            
+            <FlatList
+                data={exercises}
+                keyExtractor={(item) => item.id}
+                renderItem={renderExerciseItem}
             />
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffff',
+        padding: 16,
     },
-    headerText: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        padding: 20,
-        textAlign: 'center',
-        color: '#ffffff',
-        backgroundColor: '#7159c1',
-    },
-    listItem: {
+    header: {
         flexDirection: 'row',
-        backgroundColor: '#BFB2EA',
+        justifyContent: 'space-between',
+        
+        alignItems: 'center',
+        paddingHorizontal: 16,
+      },
+      backButton: {
+        padding: 10,
+        backgroundColor: '#7159c1',
+        borderRadius: 40,
+      },
+      backButtonText: {
+        fontSize: 16,
+        color: '#ffffff',
+        textAlign: 'center',
+      },
+    exerciseCard: {
+        backgroundColor: '#7159c1',
         borderRadius: 10,
         paddingVertical: 10,
         paddingHorizontal: 10,
-        height: 100,
+        height: 150,
         marginTop: 5,
         marginLeft: 10,
         marginRight: 6,
-    },
-    imageContainer: {
-        marginRight: 10,
-    },
-    tinyLogo: {
-        width: 75,
-        height: 75,
         borderRadius: 10,
+        padding: 16,
+        marginBottom: 16,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    exerciseName: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 8,
+        color: '#ffffff',
     },
     exerciseText: {
-        fontSize: 16,
-        color: '#000000',
-        textAlign: 'left',
-        paddingLeft: 20,
-        maxHeight: 95,
-        maxWidth: 260,
-    },
-    buttonBack: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#7159c1',
-        height: 50,
+        fontSize: 14,
+        color: '#ffffff',
     },
 });
+
+export default ExerciseListPage;

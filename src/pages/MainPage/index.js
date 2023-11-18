@@ -10,35 +10,40 @@ export default function MainPage() {
   const [id, setID] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [trainings, setTrainings] = useState([]);
+  const [trainingsData, setTrainingsData] = useState([]);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+  const [shouldRefresh, setShouldRefresh] = useState(false); // Novo estado para controlar a atualização
   const navigation = useNavigation();
 
+  /* 
+   
+  */
   const toggleSideMenu = () => {
     setIsSideMenuOpen(!isSideMenuOpen);
   };
 
-  const url = 'http://192.168.1.11:3333/';
+  const url = 'http://10.14.96.48:3333/';
 
-  //filtrar os treinos
   function filterTrainings(data) {
     if (id) {
       let filtered = data.filter((item) => item.userId === id);
       console.log(filtered);
-
       return filtered;
     } else {
       console.log('Não foi possível filtrar os treinos.');
-      return []; // Retorna um array vazio caso não haja um `id`
+      return [];
     }
   }
 
   useEffect(() => {
     fetch(url + 'training')
       .then((response) => response.json())
-      .then((data) => setTrainings(filterTrainings(data)))
+      .then((data) => {
+        const filteredTrainings = filterTrainings(data);
+        setTrainingsData(filteredTrainings);
+      })
       .catch((error) => console.log("UseEffect1 " + error));
-  }, []);
+  }, [shouldRefresh]); // Atualizado para observar shouldRefresh
 
   useEffect(() => {
     treatJwt.extrairDadosDoToken()
@@ -50,8 +55,25 @@ export default function MainPage() {
         } else {
           console.log('Não foi possível extrair os dados do token.');
         }
-      });
+      })
+      .catch((error) => console.log("UseEffect1 " + error));
   }, []);
+
+  useEffect(() => {
+    // Atualiza os treinos quando o ID muda
+    setTrainingsData(filterTrainings(trainingsData));
+  }, [id]);
+
+  // Função para forçar a atualização
+  const forceRefresh = () => {
+    setShouldRefresh(!shouldRefresh);
+  };
+
+  const scheduleRefresh = () => {
+    setTimeout(() => {
+      forceRefresh();
+    }, );
+  };
 
   return (
     <View style={styles.container}>
@@ -65,14 +87,18 @@ export default function MainPage() {
         </TouchableOpacity>
       </View>
 
+
       <FlashList
-        data={trainings}
+        data={trainingsData}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
-          <TouchableOpacity style={styles.listItem} onPress={() => navigation.navigate('Trainings')}>
+          <TouchableOpacity style={styles.listItem} onPress={() => { navigation.navigate('Trainings'); scheduleRefresh(); }}>
             <View>
               <Text style={styles.exerciseText}>
-                {"Treino " + index+1}
+                {"Treino " + (index+1)}
+              </Text>
+              <Text style={styles.exerciseTrainer}>
+                {"Treinador: " + "André Santos"}
               </Text>
             </View>
           </TouchableOpacity>
@@ -84,7 +110,6 @@ export default function MainPage() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -120,6 +145,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     paddingLeft: 30,
+    maxWidth: 250,
+  },
+  exerciseTrainer: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    paddingLeft: 30,
+    paddingTop: 10,
     maxWidth: 250,
   },
   menuButton: {
